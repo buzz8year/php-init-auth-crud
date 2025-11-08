@@ -5,16 +5,12 @@ namespace models;
 use db\PDOFactory;
 use PDO;
 
-// EXPLAIN: Soft Dependency Injection method(... , \PDO $pdo = null) /
-// down here in this class is used for future unit testing purposes
-
 class User
 {
     protected $id;
     protected $email;
     protected $password_hash;
     protected $login;
-
 
     public static function get($id, PDO | null $pdo) : User
     {
@@ -36,7 +32,6 @@ class User
         return new User();
     }
 
-
     public static function getByLogin(string $login, PDO | null $pdo) : User
     {
         if (empty($pdo)) 
@@ -56,7 +51,6 @@ class User
 
         return new User();
     }
-
     
     public function getId() : ?int
     {

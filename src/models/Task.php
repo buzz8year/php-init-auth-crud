@@ -5,9 +5,6 @@ namespace models;
 use db\PDOFactory;
 use PDO;
 
-// EXPLAIN: Soft Dependency Injection method(... , \PDO $pdo) /
-// down here in this class is used for future unit testing
-
 class Task 
 {
     public const int STATUS_COMPLETED = 2;
@@ -22,7 +19,6 @@ class Task
     protected $edited;
 
     private $task;
-
 
     public static function populateSlice(string $orderBy, int $limit, int $offset, PDO | null $pdo): void
     {
@@ -46,14 +42,12 @@ class Task
             self::$slice[(int)$object->getId()] = $object;
     }
 
-
     public static function getSlice(string $orderBy, int $limit, int $offset): array
     {
         self::populateSlice($orderBy, $limit, $offset, null);
 
         return self::$slice;
     }
-
 
     public static function get(int $id, PDO | null $pdo): Task
     {
@@ -76,7 +70,6 @@ class Task
 
     }
 
-
     public static function countAll(PDO | null $pdo): mixed
     {
         if (empty($pdo)) 
@@ -87,7 +80,6 @@ class Task
 
         return $handle->fetchColumn();  
     }
-
 
     public function create(array $data, PDO | null $pdo): bool
     {
@@ -125,7 +117,6 @@ class Task
         ]);
     }
 
-
     public function update(array $data, PDO | null $pdo): bool
     {
         if (empty($data)) 
@@ -157,7 +148,6 @@ class Task
             ':edited'       => $edited,
         ]);
     }
-
 
     public function getId(): ?int
     {
