@@ -23,20 +23,18 @@ class Dispatcher
 			header(sprintf('Location: %s', Url::getCurrentPath()));
 			die;
 		}
-		else
-		{
-			$className = sprintf('\controllers\\%sController', $this->className);
-			$objController = new $className();
+		
+		$className = sprintf('\controllers\\%sController', $this->className);
+		$objController = new $className();
 
-			if (method_exists($objController, $this->methodName))
-			{
-				$objController->{$this->methodName}();
-			}
-			else 
-			{
-				header('HTTP/1.0 404');
-				die;
-			}
+		if (method_exists($objController, $this->methodName))
+		{
+			$objController->{$this->methodName}();
+		}
+		else 
+		{
+			header('HTTP/1.0 404');
+			die;
 		}
 	}
 }

@@ -26,7 +26,7 @@ class Task
         if (empty($pdo)) 
             $pdo = PDOFactory::readInstance();
 
-        $handle = $pdo->prepare('
+        $query = $pdo->prepare('
             SELECT id, user_email, name, text, status, edited 
             FROM `task` 
             ORDER BY $orderBy 
@@ -34,12 +34,12 @@ class Task
             OFFSET :slice_offset
         ');
 
-        $handle->execute([
+        $query->execute([
             'slice_limit' => $limit,
             'slice_offset' => $offset,  
         ]);
 
-        while ($object = $handle->fetchObject('\models\Task')) 
+        while ($object = $query->fetchObject('\models\Task')) 
             self::$slice[(int)$object->getId()] = $object;
     }
 
@@ -56,16 +56,16 @@ class Task
         if (empty($pdo)) 
             $pdo = PDOFactory::readInstance();
 
-        $handle = $pdo->prepare('
+        $query = $pdo->prepare('
             SELECT id, user_email, name, text, status, edited 
             FROM `task` 
             WHERE id = :id
         ');
 
-        $handle->execute([':id' => $id ]);
+        $query->execute([':id' => $id ]);
 
-        self::$slice[(int)$id] = $handle->rowCount() === 1 
-            ? $handle->fetchObject('\models\Task')
+        self::$slice[(int)$id] = $query->rowCount() === 1 
+            ? $query->fetchObject('\models\Task')
             : new self;
 
         return self::$slice[(int)$id];
@@ -76,10 +76,10 @@ class Task
         if (empty($pdo)) 
             $pdo = PDOFactory::readInstance();
 
-        $handle = $pdo->prepare('SELECT count(*) FROM `task`');
-        $handle->execute();
+        $query = $pdo->prepare('SELECT count(*) FROM `task`');
+        $query->execute();
 
-        return $handle->fetchColumn();  
+        return $query->fetchColumn();  
     }
 
     public function create(array $data, PDO | null $pdo): bool
@@ -90,7 +90,7 @@ class Task
         if (empty($pdo)) 
             $pdo = PDOFactory::readInstance();
 
-        $handle = $pdo->prepare('
+        $query = $pdo->prepare('
             INSERT INTO `task` 
             (
                 user_email,
@@ -109,7 +109,7 @@ class Task
             ) 
         ');
 
-        return $handle->execute([
+        return $query->execute([
             ':edited'       => 0,
             ':status'       => 1,
             ':name'         => $data['task_name'],
@@ -127,7 +127,7 @@ class Task
         if (empty($pdo)) 
             $pdo = PDOFactory::readInstance();
 
-        $handle = $pdo->prepare('
+        $query = $pdo->prepare('
             UPDATE `task` SET
                 user_email = :user_email,
                 status = :status,
@@ -141,7 +141,7 @@ class Task
             ? ($data['task_text'] === $this->getText() ? 0 : 1)
             : $this->getEdited();
 
-        return $handle->execute([
+        return $query->execute([
             ':id'           => $data['task_id'] ?? $this->getId(),
             ':name'         => $data['task_name'] ?? $this->getName(),
             ':user_email'   => $data['task_usermail'] ?? $this->getUserEmail(),

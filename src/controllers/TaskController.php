@@ -9,7 +9,6 @@ use utils\Validator;
 use utils\Strings;
 use utils\Url;
 
-
 class TaskController extends BaseController
 {
 	private const int PAGE_FIRST = 1;
@@ -25,7 +24,7 @@ class TaskController extends BaseController
 		$this->countAll = (int)Task::countAll(null);
 	}
 
-	private function processGet() : void
+	private function processGet(): void
 	{
 		$toSesssion = [
 			'sort' => Task::SORT_DEFAULT,
@@ -66,7 +65,7 @@ class TaskController extends BaseController
 	}
 
 	// NOTE: Default
-	public function index() : void
+	public function index(): void
 	{
 		$this->processGet();
 
@@ -96,7 +95,7 @@ class TaskController extends BaseController
 
 
 	// NOTE: Create new task
-	public function create() : void
+	public function create(): void
 	{
 		if (!empty($_POST) && $this->validate()) 
 		{
@@ -121,7 +120,7 @@ class TaskController extends BaseController
 	}
 
 
-	public function update() : void
+	public function update(): void
 	{
 		if (!UserAuth::isUserAuthenticated()) 
 		{
@@ -162,7 +161,7 @@ class TaskController extends BaseController
 		$this->view('update', $data);
 	}
 
-	public function finalize() : void
+	public function finalize(): void
 	{
 		if (!UserAuth::isUserAuthenticated()) 
 			$_SESSION['flash']['message'] = 'You do not have enough rights';
@@ -175,7 +174,7 @@ class TaskController extends BaseController
 		}
 	}
 
-	protected function validate() : bool
+	protected function validate(): bool
 	{
 		if (empty($_POST['task_usermail']) || empty($_POST['task_name']) || empty($_POST['task_text'])) 
 		{

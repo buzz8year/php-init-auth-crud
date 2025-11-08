@@ -4,7 +4,7 @@ namespace utils;
 
 class Url
 {
-    public static function getBasePath()
+    public static function getBasePath(): mixed
     {
         $https = (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
             || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443)
@@ -25,7 +25,7 @@ class Url
         return filter_var($protocol . $domainName . $public, FILTER_VALIDATE_URL);        
     }
 
-    public static function getCurrentPath()
+    public static function getCurrentPath(): mixed
     {
         $basePath = self::getBasePath();
 
@@ -36,7 +36,7 @@ class Url
         if (!empty($_GET['id'])) 
             $controllerMethod .= sprintf('&id=%s', $_GET['id']);
 
-        // WARNING: filter_var() returns (bool)false if filter is not validated, - rethink...
+        // WARNING: filter_var() returns (bool)false if filter is not validated
         return filter_var($basePath . $controllerMethod, FILTER_VALIDATE_URL);
     }
 

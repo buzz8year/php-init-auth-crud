@@ -4,8 +4,8 @@ namespace utils;
 
 class Strings
 {
-	public static function prepareOrderBy(string $orderBy, string $default) : ?string
-	{
+    public static function prepareOrderBy(string $orderBy, string $default): ?string
+    {
         if (strpos($orderBy, '-') === false) 
         {
             $orderBy .= ' ASC';
@@ -14,8 +14,8 @@ class Strings
         {
             $orderBy = trim($orderBy, '-');
             $orderBy .= ' DESC';
-        }	
-
+        }
+        
         return $orderBy;
-	}
+    }
 }

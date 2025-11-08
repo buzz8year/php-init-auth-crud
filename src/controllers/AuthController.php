@@ -6,7 +6,6 @@ use app\UserAuth;
 use models\User;
 use utils\Url;
 
-
 class AuthController extends BaseController
 {
 	public ?User $user;
@@ -24,7 +23,7 @@ class AuthController extends BaseController
 			$login = $_POST['login'];
 			$password = $_POST['password'];
 
-			$user = User::getByLogin($login);
+			$user = User::getByLogin($login, null);
 
 			if (!empty($user) && password_verify($password, $user->getPasswordHash()) === true)
 			{

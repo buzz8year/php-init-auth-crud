@@ -11,7 +11,7 @@ class View
         $this->template = $template;
     }
 
-    public function render(array $data) 
+    public function render(array $data): void 
     {
         include sprintf('../src/views/%s.php', $this->template);
         

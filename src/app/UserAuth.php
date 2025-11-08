@@ -4,12 +4,11 @@ namespace app;
 
 use models\User;
 
-
 class UserAuth
 {
     private static $authenticated_user;
 
-    public static function clearAuthenticatedUser()
+    public static function clearAuthenticatedUser(): void
     {
         self::$authenticated_user = null;
 
@@ -20,7 +19,7 @@ class UserAuth
             unset($_SESSION['user_id']);
     }
 
-    public static function setAuthenticatedUser(User $user) : void
+    public static function setAuthenticatedUser(User $user): void
     {
         self::$authenticated_user = $user;
 
@@ -30,7 +29,7 @@ class UserAuth
         else $_SESSION['user_id'] = $user->getId();
     }
 
-    public static function getAuthenticatedUser() : User
+    public static function getAuthenticatedUser(): User
     {
         if (isset(self::$authenticated_user)) 
             return self::$authenticated_user;
@@ -49,7 +48,7 @@ class UserAuth
         return new User();
     }
 
-    public static function isUserAuthenticated() : ?bool
+    public static function isUserAuthenticated(): ?bool
     {
         return self::getAuthenticatedUser()->getId() && true;
     }

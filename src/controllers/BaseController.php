@@ -6,7 +6,6 @@ use interfaces\ControllerInterface;
 use utils\Url;
 use app\View;
 
-
 class BaseController implements ControllerInterface
 {
 	public function refresh(): never
