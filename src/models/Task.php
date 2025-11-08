@@ -67,7 +67,6 @@ class Task
             : new self;
 
         return self::$slice[(int)$id];
-
     }
 
     public static function countAll(PDO | null $pdo): mixed
