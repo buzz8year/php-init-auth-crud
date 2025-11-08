@@ -14,6 +14,7 @@ class User
 
     public static function get($id, PDO | null $pdo) : User
     {
+        // NOTE: Condition is usefull for unit testing
         if (empty($pdo)) 
             $pdo = PDOFactory::readInstance();
 
@@ -34,6 +35,7 @@ class User
 
     public static function getByLogin(string $login, PDO | null $pdo) : User
     {
+        // NOTE: Condition is usefull for unit testing
         if (empty($pdo)) 
             $pdo = PDOFactory::readInstance();
 

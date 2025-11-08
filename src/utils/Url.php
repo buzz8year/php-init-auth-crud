@@ -25,7 +25,6 @@ class Url
         return filter_var($protocol . $domainName . $public, FILTER_VALIDATE_URL);        
     }
 
-
     public static function getCurrentPath()
     {
         $basePath = self::getBasePath();

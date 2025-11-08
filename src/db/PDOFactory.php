@@ -16,7 +16,7 @@ class PDOFactory
 
     public static function writeInstance(): PDO
     {
-        // NOTE: Condition is required for unit testing
+        // NOTE: Condition is usefull for unit testing
         if (!isset(self::$pdo_written_instance)) 
             self::createPDO();
 

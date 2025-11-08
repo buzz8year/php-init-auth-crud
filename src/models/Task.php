@@ -22,6 +22,7 @@ class Task
 
     public static function populateSlice(string $orderBy, int $limit, int $offset, PDO | null $pdo): void
     {
+        // NOTE: Condition is usefull for unit testing
         if (empty($pdo)) 
             $pdo = PDOFactory::readInstance();
 
@@ -51,6 +52,7 @@ class Task
 
     public static function get(int $id, PDO | null $pdo): Task
     {
+        // NOTE: Condition is usefull for unit testing
         if (empty($pdo)) 
             $pdo = PDOFactory::readInstance();
 
@@ -121,6 +123,7 @@ class Task
         if (empty($data)) 
             return false;
 
+        // NOTE: Condition is usefull for unit testing
         if (empty($pdo)) 
             $pdo = PDOFactory::readInstance();
 

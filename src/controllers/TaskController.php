@@ -20,12 +20,10 @@ class TaskController extends BaseController
 
 	public $prepared;
 
-
 	public function __construct() 
 	{
-		$this->countAll = (int)Task::countAll();
+		$this->countAll = (int)Task::countAll(null);
 	}
-
 
 	private function processGet() : void
 	{
@@ -52,7 +50,6 @@ class TaskController extends BaseController
 
 		else $toSession['sort'] = Task::SORT_DEFAULT;
 
-
 		if (isset($_SESSION['args']) && empty(array_diff($toSession, $_SESSION['args']))) 
 		{
 			// TODO: Remove
@@ -67,7 +64,6 @@ class TaskController extends BaseController
 			$this->redirect($query);
 		}
 	}
-
 
 	// NOTE: Default
 	public function index() : void
@@ -106,7 +102,7 @@ class TaskController extends BaseController
 		{
 			$task = new Task();
 
-			if ($task->create($_POST))
+			if ($task->create($_POST, null))
 			{
 				$_SESSION['flash']['message'] = 'Task has been successfully created';
 				$_SESSION['args']['sort'] = '-id';
@@ -139,7 +135,7 @@ class TaskController extends BaseController
 			$this->redirect(null);
 		}
 
-		$task = Task::get($_GET['id']);
+		$task = Task::get($_GET['id'], null);
 
 		if (!empty($task) && !empty($_POST) && $this->validate()) 
 		{
@@ -149,7 +145,7 @@ class TaskController extends BaseController
 				$this->refresh();
 			}
 
-			if ($task->update($_POST))
+			if ($task->update($_POST, null))
 			{
 				$_SESSION['flash']['message'] = 'Task has been successfully updated';
 				$this->refresh();
@@ -166,20 +162,18 @@ class TaskController extends BaseController
 		$this->view('update', $data);
 	}
 
-
 	public function finalize() : void
 	{
 		if (!UserAuth::isUserAuthenticated()) 
 			$_SESSION['flash']['message'] = 'You do not have enough rights';
 
 
-		if (!empty($_POST['id']) && ($task = Task::get($_POST['id']))) 
+		if (!empty($_POST['id']) && ($task = Task::get($_POST['id'], null))) 
 		{
-			if ($task->update(['task_status' => Task::STATUS_COMPLETED]))
+			if ($task->update(['task_status' => Task::STATUS_COMPLETED], null))
 				$_SESSION['flash']['message'] = sprintf('Task #%d has been successfully completed', $task->getId());
 		}
 	}
-
 
 	protected function validate() : bool
 	{
