@@ -2,23 +2,23 @@
 
 namespace controllers;
 
-use app\View;
 use app\UserAuth;
 use models\User;
-use helpers\Url;
+use utils\Url;
 
 
 class AuthController extends BaseController
 {
-	// EXPLAIN: ...
-	public function login() : void
+	public ?User $user;
+
+	public function login(): void
 	{
-		if (UserAuth::isUserAuthenticated()) {
+		if (UserAuth::isUserAuthenticated()) 
+		{
 			$_SESSION['flash']['message'] = 'Authenticated';
-			$this->redirect();
+			$this->redirect(null);
 		}
 
-		// EXPLAIN: ...
 		if (!empty($_POST)) 
 		{
 			$login = $_POST['login'];
@@ -30,29 +30,27 @@ class AuthController extends BaseController
 			{
 				UserAuth::setAuthenticatedUser($user);
 				$this->user = $user;
-				$this->redirect();
+
+				$this->redirect(null);
 			}
 			else
 			{
 				$_SESSION['flash']['message'] = 'Login or password is incorrect';
 				$this->refresh();
 			}
-
 		}
 
-		// EXPLAIN: ...
-		$data = array(
+		$data = [
 			'message' => $_SESSION['flash']['message'] ?? null,
 			'form_action' => Url::getCurrentPath(),
 			'basepath' => Url::getBasePath(),
-		);
+		];
 
 		$this->view('login', $data);
 	}
 
 
-	// EXPLAIN: ...
-	public function logout() : void
+	public function logout(): void
 	{
 		if (UserAuth::isUserAuthenticated()) 
 		{
@@ -61,7 +59,7 @@ class AuthController extends BaseController
 			$this->user = null;
 		}
 
-		$this->redirect();
+		$this->redirect(null);
 	}
 
 }

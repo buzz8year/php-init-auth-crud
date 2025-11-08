@@ -2,7 +2,6 @@
 
 namespace interfaces;
 
-
 interface ControllerInterface
 {
 	public function refresh();

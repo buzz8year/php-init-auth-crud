@@ -1,7 +1,3 @@
-<?php
-
-?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,7 +20,9 @@
 <h3>Authentication</h3>
 
 <div class="row">
+
 	<div class="col-lg-6 col-md-12">
+
 		<form action="<?= $data['form_action'] ?>" method="post">
 
 			<div class="form-group">
@@ -38,8 +36,11 @@
 			<br/><br/>
 
 			<button type="submit" class="btn btn-default">Submit</button>
+
 		</form>
+
 	</div>
+
 </div>
 
 </body>

@@ -2,12 +2,11 @@
 
 namespace models;
 
-use db\Querier;
+use db\PDOFactory;
+use PDO;
 
-// EXPLAIN: Soft Dependency Injection / 
-// method(... , \PDO $pdo = null) /
-// down here in this class is used 
-// for future unit testing purposes
+// EXPLAIN: Soft Dependency Injection method(... , \PDO $pdo = null) /
+// down here in this class is used for future unit testing purposes
 
 class User
 {
@@ -17,12 +16,10 @@ class User
     protected $login;
 
 
-    public static function get($id, \PDO $pdo = null) : User
+    public static function get($id, PDO | null $pdo) : User
     {
-        if (!isset($pdo)) 
-        {
-            $pdo = Querier::readInstance();
-        }
+        if (empty($pdo)) 
+            $pdo = PDOFactory::readInstance();
 
         $handle = $pdo->prepare('
         	SELECT id, email, login, password_hash
@@ -30,29 +27,20 @@ class User
         	WHERE id = :id
         ');
 
-        $handle->execute(
-            array(
-                ':id' => $id
-            )
-        );
+        $handle->execute([':id' => $id]);
 
         // EXPLAIN: Must be one record only
         if ($handle->rowCount() === 1) 
-        {
             return $handle->fetchObject('\models\User');
-        }
 
         return new User();
     }
 
 
-    public static function getByLogin(string $login, \PDO $pdo = null) : User
+    public static function getByLogin(string $login, PDO | null $pdo) : User
     {
-
-        if (!isset($pdo)) 
-        {
-            $pdo = Querier::readInstance();
-        }
+        if (empty($pdo)) 
+            $pdo = PDOFactory::readInstance();
 
         $handle = $pdo->prepare('
         	SELECT id, email, login, password_hash
@@ -60,24 +48,16 @@ class User
         	WHERE login = :login
         ');
 
-        $handle->execute(
-        	array(
-	            ':login' => $login
-	        )
-        );
+        $handle->execute([':login' => $login ]);
 
-        // EXPLAIN: Must be one record only
+        // NOTE: Must be one record only
         if ($handle->rowCount() === 1) 
-        {
             return $handle->fetchObject('\models\User');
-        }
 
         return new User();
     }
 
-
-
-
+    
     public function getId() : ?int
     {
         return $this->id;
@@ -105,7 +85,6 @@ class User
         return $this->login;
     }
 
-
     public function setLogin(string $login) : User
     {
         $this->login = $login;
@@ -117,12 +96,10 @@ class User
         return $this->password_hash;
     }
 
-
     public function setPasswordHash(string $password_hash) : User
     {
         $this->password_hash = $password_hash;
         return $this;
     }
-
 
 }

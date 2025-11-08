@@ -2,37 +2,30 @@
 
 namespace app;
 
-use helpers\Url;
-
+use utils\Url;
 
 class Dispatcher
 {
-	const DEFAULT_METHODNAME = 'index';
+	protected const string DEFAULT_METHODNAME = 'index';
+	protected string $className;
+	protected string $methodName;
 
-	protected $className;
-	protected $methodName;
-
-
-	// EXPLAIN: ...
 	public function __construct(array $data)
 	{
 		$this->className = ucfirst($data[0] ?? DEFAULT_CONTROLLER_NAME);
 		$this->methodName = strval($data[1] ?? self::DEFAULT_METHODNAME);
 	}
 
-
-	// EXPLAIN: ...
 	public function dispatch()
 	{
-		// EXPLAIN: ...
 		if (empty($this->className)) 
 		{
-			header('Location: ' . Url::getCurrentPath());
+			header(sprintf('Location: %s', Url::getCurrentPath()));
 			die;
 		}
 		else
 		{
-			$className = '\controllers\\' . $this->className . 'Controller';
+			$className = sprintf('\controllers\\%sController', $this->className);
 			$objController = new $className();
 
 			if (method_exists($objController, $this->methodName))
@@ -44,9 +37,6 @@ class Dispatcher
 				header('HTTP/1.0 404');
 				die;
 			}
-
 		}
-
 	}
-
 }

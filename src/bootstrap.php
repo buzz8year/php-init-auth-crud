@@ -5,20 +5,16 @@ require_once 'config.php';
 
 use app\Dispatcher;
 
-
-try 
-{
+try {
 	session_start();
 
-	// EXPLAIN: ...
-	$data = empty($_GET['r']) ? array() : explode('/', $_GET['r']);
+	$data = !empty($_GET['r']) 
+		? explode('/', $_GET['r'])
+		: [];
 
-	// EXPLAIN: ...
 	$dispatcher = new Dispatcher($data);
 	$dispatcher->dispatch();
-
 } 
-catch (\Exception $e) 
-{
+catch (\Exception $e) {
 	// TODO: Error handler to catch app specific case errors
 }

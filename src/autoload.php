@@ -1,8 +1,9 @@
 <?php
 
-spl_autoload_register( function($className) {
+spl_autoload_register(function($className) {
+
 	$exp = explode('\\', $className);
 	$path = implode('/', $exp);
 
-	include_once '../src/' . $path . '.php';
+	include_once sprintf('../src/%s.php', $path);
 });
